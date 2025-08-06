@@ -39,14 +39,14 @@ export function LoginWithWalletButton () {
 
 // Use this to link an external wallet e.g. Metamask to the currently logged in user. This will add the metamask wallet
 // to the existing embedded wallet created by Privy. That is user x will have two wallets for each network i.e. Solana and EVM
-// TODO: don't use that in our App. We want users to have a single wallet address per chain.
 export function LinkAccountButton() {
   const {linkWallet, linkPasskey} = useLinkAccount();
 
   return (
     <div>
-      <button onClick={linkWallet}>Link External Wallet</button>
       <button onClick={linkPasskey}>Link Passkey</button>
+      {/* TODO: don't use that in our App. We want users to have a single wallet address per chain. */}
+      {/* <button onClick={linkWallet}>Link External Wallet</button> */}
     </div>
   );
 }

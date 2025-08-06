@@ -13,7 +13,7 @@ export const AuthGuard = ({children}) => {
   console.log("Solana wallets: ", solanaWallets)
 
   useEffect(() => {
-    const selectedChain = "solana";
+    const selectedChain = "base";
 
     const run = async () => {
       let wallet;
@@ -23,10 +23,22 @@ export const AuthGuard = ({children}) => {
       } else if (selectedChain === "ethereum") {
         wallet = evmWallet[0];
         wallet.switchChain(1);
+      } else if (selectedChain === "ethereum_sepolia") {
+        wallet = evmWallet[0];
+        wallet.switchChain(11155111);
+      } else if (selectedChain === "base") {
+        wallet = evmWallet[0];
+        wallet.switchChain(8453);
+      } else if (selectedChain === "base_sepolia") {
+        wallet = evmWallet[0];
+        wallet.switchChain(84532);
       } else if (selectedChain === "berachain") {
         wallet = evmWallet[0];
         wallet.switchChain(80094);
-      }
+      } else if (selectedChain === "bepolia") {
+        wallet = evmWallet[0];
+        wallet.switchChain(80069);
+      } 
 
       if (authenticated) {
         const ts = Date.now();
