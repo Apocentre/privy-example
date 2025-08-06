@@ -1,58 +1,16 @@
 import React, { useEffect } from "react";
 import {usePrivy, useWallets} from "@privy-io/react-auth";
 import {useSolanaWallets, useSignMessage} from '@privy-io/react-auth/solana';
-import {ConnectWalletButton} from "./buttons";
+import {LoginButton, LoginWithWalletButton} from "./buttons";
 
-
-export const AuthGuard = ({ children }) => {
-  const { ready, authenticated } = usePrivy();
-
-  const { wallets } = useWallets();
-  const embeddedWallet = wallets.find(
-    (wallet) => wallet.walletClientType === "privy",
-  );
-
-
-  const MemoisedAuthGuardInner = React.useMemo(() => {
-    if (!embeddedWallet) {
-      return null;
-    }
-
-    return (
-      <AuthGuardInner embeddedWallet={embeddedWallet}>
-        {children}
-      </AuthGuardInner>
-    );
-  }, [embeddedWallet, children]);
-
-
-  if (!authenticated) {
-    return (
-      <div className="flex h-full flex-1 items-center justify-center">
-        <ConnectWalletButton />
-      </div>
-    );
-  }
-
-  if (!embeddedWallet) {
-    return (
-      <div>
-        <p>No embedded wallet found</p>
-      </div>
-    );
-  }
-
-  return MemoisedAuthGuardInner;
-};
-
-export const AuthGuardInner = ({children}) => {
+export const AuthGuard = ({children}) => {
   const { authenticated, user, signMessage } = usePrivy();
   const { ready: evmReady, wallets: evmWallet } = useWallets();
   const { wallets: solanaWallets, ready: solanaReady } = useSolanaWallets();
   const {signMessage: solanaSignMessage} = useSignMessage();
 
-console.log("EVM wallets: ", evmWallet)
-console.log("Solana wallets: ", solanaWallets)
+  console.log("EVM wallets: ", evmWallet)
+  console.log("Solana wallets: ", solanaWallets)
 
   useEffect(() => {
     const selectedChain = "solana";
@@ -111,14 +69,15 @@ console.log("Solana wallets: ", solanaWallets)
       .catch((e) => console.log(`Error authenticating user: ${e}`));
   }, [evmReady, solanaReady, authenticated]);
 
-
   if (!authenticated) {
     return (
       <div className="h-fullitems-center flex flex-1 justify-center">
-        <ConnectWalletButton />
+        <LoginButton />
+        <p>Or use existing wallet</p>
+        <LoginWithWalletButton/>
       </div>
     );
   }
 
-  return children;
+  return children
 };
